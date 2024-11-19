@@ -1,0 +1,67 @@
+[
+    {
+      "_id": "605c72ef8c93b4a6c0e77f3a",
+      "email": "alice.therapy@example.com",
+      "name": "abc",
+      "password": "alice1234",
+      "supervisorIds": "605c72ef8c93b4a6c0e77f56",
+      "assignedPatients": [
+        "605c72ef8c93b4a6c0e77f7c",
+        "605c72ef8c93b4a6c0e77f7d"
+      ],
+      "availableTimes": [
+        {
+          "day": "Monday",
+          "startTime": "09:00 AM",
+          "endTime": "12:00 PM"
+        },
+        {
+          "day": "Monday",
+          "startTime": "01:00 PM",
+          "endTime": "05:00 PM"
+        },
+        {
+          "day": "Wednesday",
+          "startTime": "10:00 AM",
+          "endTime": "01:00 PM"
+        }
+      ],
+      "commentsFromSupervisor": [
+        {
+          "supervisorId": "605c72ef8c93b4a6c0e77f56",
+          "comment": "Dr. Alice has been doing well with her patients.",
+          "timestamp": "2024-11-15T10:00:00Z"
+        }
+      ]
+    },
+    {
+      "_id": "605c72ef8c93b4a6c0e77f3b",
+      "email": "bob.therapy@example.com",
+      "name":"abc",
+      "password": "bob1234",
+      "supervisorIds": "605c72ef8c93b4a6c0e77f56",
+      "assignedPatients": [
+        "605c72ef8c93b4a6c0e77f7e"
+      ],
+      "availableTimes": [
+        {
+          "day": "Tuesday",
+          "startTime": "08:00 AM",
+          "endTime": "11:00 AM"
+        },
+        {
+          "day": "Thursday",
+          "startTime": "09:00 AM",
+          "endTime": "01:00 PM"
+        }
+      ],
+      "commentsFromSupervisor": [
+        {
+          "supervisorId": "605c72ef8c93b4a6c0e77f56",
+          "comment": "Bob needs to improve his session punctuality.",
+          "timestamp": "2024-11-14T14:00:00Z"
+        }
+      ]
+    }
+  ]
+  

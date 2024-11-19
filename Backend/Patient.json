@@ -1,0 +1,45 @@
+[
+    {
+      "_id": "605c72ef8c93b4a6c0e77f7c",
+      "name": "John Doe",
+      "email": "john.doe@example.com",
+      "password": "john1234",
+      "noOfSessions": 2,
+      "therapistId": "605c72ef8c93b4a6c0e77f3a",
+      "sessionLogs": [
+        {
+          "sessionId": "605c72ef8c93b4a6c0e77f9c"
+        },
+        {
+          "sessionId": "605c72ef8c93b4a6c0e77f9d"
+        }
+      ]
+    },
+    {
+      "_id": "605c72ef8c93b4a6c0e77f7d",
+      "name": "Jane Smith",
+      "email": "jane.smith@example.com",
+      "password": "jane1234",
+      "noOfSessions": 3,
+      "therapistId": "605c72ef8c93b4a6c0e77f3a",
+      "sessionLogs": [
+        {
+          "sessionId": "605c72ef8c93b4a6c0e77f9d"
+        }
+      ]
+    },
+    {
+      "_id": "605c72ef8c93b4a6c0e77f7e",
+      "name": "Alice Johnson",
+      "email": "alice.johnson@example.com",
+      "password": "alice1234",
+      "noOfSessions": 1,
+      "therapistId": "605c72ef8c93b4a6c0e77f3b",
+      "sessionLogs": [
+        {
+          "sessionId": "605c72ef8c93b4a6c0e77f9e"
+        }
+      ]
+    }
+  ]
+  

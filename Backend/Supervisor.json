@@ -1,0 +1,31 @@
+[
+    {
+      "_id": "605c72ef8c93b4a6c0e77f56",
+      "supervisorId": "605c72ef8c93b4a6c0e77f56",
+      "email": "supervisor@example.com",
+      "password": "supervisor123",
+      "therapistIds": [
+        "605c72ef8c93b4a6c0e77f3a",
+        "605c72ef8c93b4a6c0e77f3b"
+      ],
+      "reports": [
+        {
+          "therapistId": "605c72ef8c93b4a6c0e77f3a",
+          "patientIds": ["605c72ef8c93b4a6c0e77f7c", "605c72ef8c93b4a6c0e77f7d"],
+          "sessionCount": 4,
+          "feedbackSummary": "Positive feedback from both patients.",
+          "supervisorComments": "Keep up the good work!",
+          "timestamp": "2024-11-15T12:00:00Z"
+        },
+        {
+          "therapistId": "605c72ef8c93b4a6c0e77f3b",
+          "patientIds": ["605c72ef8c93b4a6c0e77f7e"],
+          "sessionCount": 2,
+          "feedbackSummary": "Patient's progress is slow, but improving.",
+          "supervisorComments": "Work on increasing session effectiveness.",
+          "timestamp": "2024-11-14T16:00:00Z"
+        }
+      ]
+    }
+  ]
+  
