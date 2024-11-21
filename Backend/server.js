@@ -1,45 +1,43 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const sessionRoutes = require('./Routes/sessionRoutes');
-const Therapist = require('./Models/TherapistModel')
-
+const Patient = require('./Models/PatientModel')
+const cors = require('cors')
 const app = express();
+
+app.use(cors())
 app.use(express.json());
 
 app.use('/api/sessions', sessionRoutes);
 
 
-mongoose.connect('mongodb+srv://bhuvaneshg:deepakbhuvi@cluster0.e2m47pj.mongodb.net/SIH?retryWrites=true&w=majority&appName=Cluster0', {
+mongoose.connect('mongodb://localhost:27017/SIH', {
     useNewUrlParser: true,    
     useUnifiedTopology: true
   })
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log('MongoDB connection error: ', err));
-  
-  const testInsert = async () => {
+
+
+  app.get('/api/patients/:id', async (req, res) => {
+    const { id } = req.params;
     try {
-      await Therapist.create({
-        email: "test.therapy@example.com",
-        name: "Test Therapy",
-        password: "test1234",
-        supervisorIds: [new mongoose.Types.ObjectId("605c72ef8c93b4a6c0e77f56")], // Use `new` here
-        assignedPatients: [new mongoose.Types.ObjectId("605c72ef8c93b4a6c0e77f7c")], // Use `new` here
-        availableTimes: [
-          { day: "Monday", startTime: "09:00 AM", endTime: "12:00 PM" },
-        ],
-        commentsFromSupervisor: [],
-      });
-      console.log('Test therapist added');
-    } catch (err) {
-      console.error('Error inserting test data:', err);
+      const patient = await Patient.findById(id).exec();
+      if (!patient) {
+        return res.status(404).json({ message: 'Patient not found' });
+      }
+      const enrichedPatient = {
+        ...patient.toObject(),
+        progress: 75, 
+        goalDescription: `Improving ${patient.goal} through daily exercises`,
+      };
+  
+      res.json(enrichedPatient);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching patient data', error });
     }
-  };
-  
-  testInsert();
-  
-  
-  
-  
+  });
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

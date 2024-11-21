@@ -31,6 +31,10 @@ const PatientSchema = new Schema({
             },
         },
     ],
+    goal: {
+        type: String,
+        required: true,
+    },
 });
 
 const Patient = mongoose.model('Patient', PatientSchema);
