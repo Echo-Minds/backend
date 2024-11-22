@@ -23,7 +23,6 @@ const SessionSchema = new Schema({
     mood: { 
         type: String, 
         enum: ['Happy', 'Neutral', 'Sad', 'Angry', 'Calm', 'Good'], 
-        required: true 
     },
     notes: { 
         type: String 
@@ -52,6 +51,7 @@ const SessionSchema = new Schema({
             },
             message: props => `Rating must be a decimal value between 1.0 and 5.0, received ${props.value}`,
         },
+        required:false,
     },
 });
 
