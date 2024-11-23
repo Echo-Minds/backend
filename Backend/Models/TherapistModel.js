@@ -8,7 +8,7 @@ const TherapistSchema = new Schema({
     supervisorIds: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'Supervisor',
-        default: [] // Allows an empty array by default
+        default: [] 
       }
       ,
     assignedPatients: [{ type: Types.ObjectId, ref: 'Patient' }],

@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const sessionRoutes = require('./Routes/sessionRoutes');
 const Patient = require('./Models/PatientModel')
+const therapist = require('./Models/TherapistModel');
 const cors = require('cors')
 const app = express();
 
@@ -11,7 +12,7 @@ app.use(express.json());
 app.use('/api/sessions', sessionRoutes);
 
 
-mongoose.connect('mongodb://localhost:27017/SIH', {
+mongoose.connect('mongodb+srv://bhuvaneshg:deepakbhuvi@cluster0.e2m47pj.mongodb.net/SIH', {
     useNewUrlParser: true,    
     useUnifiedTopology: true
   })
@@ -37,6 +38,18 @@ mongoose.connect('mongodb://localhost:27017/SIH', {
       res.status(500).json({ message: 'Error fetching patient data', error });
     }
   });
+  app.get('/getName', async (req,res)=>{
+    const {id} = req.query;
+    try{
+      const name = await therapist.findById(id).exec();
+      if(!name){
+        return res.status(404).json({message: "Therapist not found"});
+      }
+      res.json(name);
+    }catch(error){
+      res.status(500).json({message:"error fetching therapist name", error});
+    }
+  })
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

@@ -3,11 +3,8 @@ const Patient = require('../Models/PatientModel');
 
 const getSlotsForPatient = async (req, res) => {
     try {
-        console.log("HI");
         const patientId = req.params.patientId;
-        console.log(patientId);
         const { day } = req.query;
-        console.log(day);
         const patient = await Patient.findById(patientId).exec();
         if (!patient) {
             return res.status(404).json({ message: 'Patient not found' });
