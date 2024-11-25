@@ -10,10 +10,8 @@ const scheduleSession = async (req, res) => {
     mood, 
     notes, 
     sessionType, 
-    meetLink, 
     rating 
   } = req.body;
-
   try {
     const patient = await Patient.findById(patientId);
 
@@ -27,10 +25,10 @@ const scheduleSession = async (req, res) => {
       return res.status(404).json({ message: 'Therapist not found' });
     }
 
-    const requestedDay = new Date(startTime).toLocaleString('en-us', { weekday: 'long' });
+    const requestedDay = new Date(startTime).toLocaleString('en-us', {timeZone:'Asia/Kolkata',weekday: 'long'});
     let isAvailable = false;
     let selectedSlot = null;
-
+    console.log(requestedDay);
     therapist.availableTimes.forEach((timeSlot) => {
       if (timeSlot.day === requestedDay) {
         timeSlot.slots.forEach((slot) => {
@@ -42,7 +40,8 @@ const scheduleSession = async (req, res) => {
           const sessionEndTime = new Date(endTime);
           const sessionStart = new Date(Date.UTC(1970, 0, 1, sessionStartTime.getUTCHours(), sessionStartTime.getUTCMinutes()));
           const sessionEnd = new Date(Date.UTC(1970, 0, 1, sessionEndTime.getUTCHours(), sessionEndTime.getUTCMinutes()));
-
+          console.log(slotStart);
+          console.log(slotEnd)
           if (sessionStart >= slotStart && sessionEnd <= slotEnd && slot.isAvailable) {
             isAvailable = true;
             selectedSlot = slot;
@@ -66,6 +65,10 @@ const scheduleSession = async (req, res) => {
       return res.status(400).json({ message: 'Therapist is already booked for the selected time.' });
     }
 
+    const onlineMeetingLink = sessionType === 'Online' 
+      ? `https://one-to-one-inky.vercel.app/room/${patientId}` 
+      : undefined;
+
     const newSession = await Session.create({
       patientId,
       therapistId: therapist._id,
@@ -74,7 +77,7 @@ const scheduleSession = async (req, res) => {
       mood,
       notes,
       sessionType,
-      meetLink: sessionType === 'Online' ? meetLink : undefined,
+      meetLink: onlineMeetingLink,
       rating,
       status: 'online',
       sessionSlot: selectedSlot,

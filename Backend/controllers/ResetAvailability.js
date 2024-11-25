@@ -20,7 +20,7 @@ async function resetAvailability() {
 schedule.scheduleJob('0 0 * * 1', async () => {
     await resetAvailability();
 });
-mongoose.connect('mongodb://localhost:27017/SIH', {
+mongoose.connect('mongodb+srv://bhuvaneshg:deepakbhuvi@cluster0.e2m47pj.mongodb.net/SIH', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })

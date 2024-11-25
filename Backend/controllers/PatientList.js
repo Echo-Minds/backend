@@ -24,6 +24,8 @@ const getPatientList = async (req, res) => {
           name: patient.name,
           age: patient.age,
           nextAppointment: session.startTime,
+          sessionId : session._id,
+          meetLink: session.meetLink
         };
       })
     );

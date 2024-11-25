@@ -5,7 +5,6 @@ const Therapist = require('../Models/TherapistModel');
 const assignPatientToTherapist = async (req, res) => {
   try {
     const { patientId } = req.body;
-
     if (!mongoose.Types.ObjectId.isValid(patientId)) {
       return res.status(400).send({ error: "Invalid patientId format" });
     }
