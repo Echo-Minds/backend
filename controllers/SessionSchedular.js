@@ -14,7 +14,7 @@ const scheduleSession = async (req, res) => {
   } = req.body;
   try {
     const patient = await Patient.findById(patientId);
-
+    console.log(startTime);
     if (!patient) {
       return res.status(404).json({ message: 'Patient not found' });
     }
@@ -25,7 +25,7 @@ const scheduleSession = async (req, res) => {
       return res.status(404).json({ message: 'Therapist not found' });
     }
 
-    const requestedDay = new Date(startTime).toLocaleString('en-us', {timeZone:'Asia/Kolkata',weekday: 'long'});
+    const requestedDay = new Date(startTime).toLocaleString('en-us', {weekday: 'long', timeZone:'UTC'});
     let isAvailable = false;
     let selectedSlot = null;
     console.log(requestedDay);
@@ -40,8 +40,6 @@ const scheduleSession = async (req, res) => {
           const sessionEndTime = new Date(endTime);
           const sessionStart = new Date(Date.UTC(1970, 0, 1, sessionStartTime.getUTCHours(), sessionStartTime.getUTCMinutes()));
           const sessionEnd = new Date(Date.UTC(1970, 0, 1, sessionEndTime.getUTCHours(), sessionEndTime.getUTCMinutes()));
-          console.log(slotStart);
-          console.log(slotEnd)
           if (sessionStart >= slotStart && sessionEnd <= slotEnd && slot.isAvailable) {
             isAvailable = true;
             selectedSlot = slot;

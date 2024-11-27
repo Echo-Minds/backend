@@ -24,9 +24,27 @@ const SessionSchema = new Schema({
         type: String, 
         enum: ['Happy', 'Neutral', 'Sad', 'Angry', 'Calm', 'Good'], 
     },
-    notes: { 
-        type: String 
-    },
+    notes: [{
+        monotone: { type: Number, min: 1, max: 5 },
+        hyperprosodic: { type: Number, min: 1, max: 5 },
+        dysprosodic: { type: Number, min: 1, max: 5 },
+        appropriateProsody: { type: Number, min: 1, max: 5 },
+        prosodyComment: { type: String }, 
+
+        hoarseVoice: { type: Number, min: 1, max: 5 },
+        breathyVoice: { type: Number, min: 1, max: 5 },
+        glottalFry: { type: Number, min: 1, max: 5 },
+        appropriateVoiceQuality: { type: Number, min: 1, max: 5 },
+        hypernasal: { type: Number, min: 1, max: 5 },
+        voiceQualityComment: { type: String },  // One comment for the entire Voice Quality section
+
+        highPitch: { type: Number, min: 1, max: 5 },
+        lowPitch: { type: Number, min: 1, max: 5 },
+        appropriatePitch: { type: Number, min: 1, max: 5 },
+        loudVoice: { type: Number, min: 1, max: 5 },
+        softVoice: { type: Number, min: 1, max: 5 },
+        pitchLoudnessComment: { type: String },
+    }],
     sessionType: { 
         type: String, 
         enum: ['Online', 'Offline'],
@@ -51,7 +69,7 @@ const SessionSchema = new Schema({
             },
             message: props => `Rating must be a decimal value between 1.0 and 5.0, received ${props.value}`,
         },
-        required:false,
+        required: false,
     },
 });
 

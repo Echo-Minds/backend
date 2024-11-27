@@ -1,14 +1,16 @@
 const Session = require('../Models/SessionModel');
 const Patient = require('../Models/PatientModel');
+const {DateTime} = require('luxon');
 
 const getPatientList = async (req, res) => {
   const { therapistId } = req.query;
   try {
-    const currentDate = new Date(); 
-
+    const currentDate = DateTime.now().setZone("Asia/Kolkata").toISO(); 
+    const currentDatePlus45 = DateTime.fromISO(currentDate).minus({ minutes: 45 }).toISO();
+    const currentDateOff = currentDatePlus45.replace('+05:30','Z');
     const sessions = await Session.find({
       therapistId,
-      startTime: { $gte: currentDate }, 
+      startTime: { $gte: currentDateOff }, 
     })
       .sort({ startTime: 1 })
       .exec();
