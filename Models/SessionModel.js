@@ -45,6 +45,11 @@ const SessionSchema = new Schema({
         softVoice: { type: Number, min: 1, max: 5 },
         pitchLoudnessComment: { type: String },
     }],
+    nextStartTime:{
+        type: Date,
+    }, nextEndTime:{
+        type: Date,
+    },
     sessionType: { 
         type: String, 
         enum: ['Online', 'Offline'],
@@ -63,12 +68,6 @@ const SessionSchema = new Schema({
         type: Number,
         min: 1.0,
         max: 5.0,
-        validate: {
-            validator: function (v) {
-                return Number(v) >= 1.0 && Number(v) <= 5.0;
-            },
-            message: props => `Rating must be a decimal value between 1.0 and 5.0, received ${props.value}`,
-        },
         required: false,
     },
 });

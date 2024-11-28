@@ -7,7 +7,7 @@ const nextAppointment = async (req, res) => {
         const patientId = req.query.patientId;
 
         if (!patientId) {
-            return res.status(400).json({ error: "Patient ID is required." });
+            return res.status(404).json({ error: "Patient ID is required." });
         }
 
         const patient = await Patient.findById(patientId).exec();
@@ -19,7 +19,7 @@ const nextAppointment = async (req, res) => {
         const sessionIds = patient.sessionLogs.map(log => log.sessionId);
         const sessions = await Session.find({ _id: { $in: sessionIds } }).exec();
         if (!sessions || sessions.length === 0) {
-            return res.status(404).json({ message: 'No sessions found for this patient.' });
+            return res.status(200).json({ message: 'No sessions found for this patient.' });
         }
 
         const currentT = DateTime.now().setZone("Asia/Kolkata").toISO();
@@ -38,7 +38,7 @@ const nextAppointment = async (req, res) => {
         const nextSession = sortedSessions.length > 0 ? sortedSessions[0] : null;
 
         if (!nextSession) {
-            return res.status(404).json({ message: 'No upcoming sessions found.' });
+            return res.status(200).json({ message: 'No upcoming sessions found.' });
         }
 
         res.status(200).json(nextSession);
