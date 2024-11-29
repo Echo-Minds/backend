@@ -43,6 +43,7 @@ class PatientLogin(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+    id:str
 
 # Patient data model excluding sensitive data like password
 class Patient(BaseModel):
@@ -126,7 +127,7 @@ async def login_patient(patient_data: PatientLogin):
         data={"sub": patient["email"]}, expires_delta=access_token_expires
     )
     
-    return {"access_token": access_token, "token_type": "bearer","_id":str(patient["_id"])}
+    return {"access_token": access_token, "token_type": "bearer","id":str(patient["_id"])}
 
 # Get patient info route - Requires JWT token
 @router.get("/patient/{patient_id}")
