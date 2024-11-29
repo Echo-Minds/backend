@@ -1,4 +1,4 @@
-import gridfs
+#import gridfs
 from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
@@ -6,15 +6,12 @@ from pymongo import MongoClient
 import jwt
 import datetime
 from passlib.context import CryptContext
-from uuid import uuid4
-from io import BytesIO
 from fastapi.responses import JSONResponse
 from typing import Optional
 
 # MongoDB Atlas connection
-client = MongoClient("mongodb://localhost:27017")
-db = client['sih']
-fs = gridfs.GridFS(db)
+client = MongoClient("mongodb+srv://bhuvaneshg:deepakbhuvi@cluster0.e2m47pj.mongodb.net")
+db = client['SIH']
 
 router = APIRouter()
 
@@ -129,14 +126,14 @@ async def login_patient(patient_data: PatientLogin):
         data={"sub": patient["email"]}, expires_delta=access_token_expires
     )
     
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer","_id":str(patient["_id"])}
 
 # Get patient info route - Requires JWT token
 @router.get("/patient/{patient_id}")
 async def get_patient_info(patient_id: str, token: str = Depends(oauth2_scheme)):
     try:
         # Decode the token to verify the user
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        #payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         patient_email: str = payload.get("sub")
         if patient_email is None:
             raise HTTPException(status_code=401, detail="Invalid token")
@@ -148,8 +145,8 @@ async def get_patient_info(patient_id: str, token: str = Depends(oauth2_scheme))
             raise HTTPException(status_code=404, detail="Patient not found")
 
         # Retrieve image from GridFS using file_id
-        image_file = fs.get(patient["image_id"])
-        image_data = image_file.read()
+        #image_file = fs.get(patient["image_id"])
+        #image_data = image_file.read()
 
         return {
             "id": str(patient["_id"]),

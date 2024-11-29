@@ -2,7 +2,6 @@ from fastapi import APIRouter, HTTPException, Depends,UploadFile, File, Form
 from passlib.context import CryptContext
 from app.models.user import UserRegistration,UserLogin,UserResponse,UserFiles
 from app.database import users_collection,user_files_collection
-from bson import ObjectId
 
 # Password hashing setup
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
