@@ -1,5 +1,4 @@
 from motor.motor_asyncio import AsyncIOMotorClient
-from bson import ObjectId
 from dotenv import load_dotenv
 import asyncio
 import os

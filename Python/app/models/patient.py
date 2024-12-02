@@ -2,7 +2,6 @@ from pydantic import BaseModel, EmailStr, Field, validator
 from typing import Optional
 from fastapi import UploadFile
 from passlib.context import CryptContext
-from io import BytesIO
 import gridfs
 from pymongo import MongoClient
 
