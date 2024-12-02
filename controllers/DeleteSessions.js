@@ -1,6 +1,6 @@
 const Session = require('../Models/SessionModel');
 const Therapist = require('../Models/TherapistModel');
-
+const Notification = require('../Models/NotificationModel');
 const deleteSession = async (req, res) => {
   const sessionId = req.query.sessionId;
 
@@ -47,7 +47,15 @@ const deleteSession = async (req, res) => {
       }
       return timeSlot;
     });
-
+    const deleteOne = await Notification.create({
+      type:"Session Cancelled",
+      message:`The session with ${therapist.name} was cancelled at ${new Date()}`,
+      patientId:session.patientId,
+      therapistId:session.therapistId,
+      timestamp: new Date(),
+      isRead:false,
+    }
+    )
     therapist.availableTimes = availableTimes;
     await therapist.save();
 

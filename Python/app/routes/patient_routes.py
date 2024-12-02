@@ -35,19 +35,16 @@ class PatientRegister(BaseModel):
     age: int
     gender: str
     goals: str
-    password: str  # Password field for registration
+    password: str
 
-# Patient Login Model
 class PatientLogin(BaseModel):
     email: str
     password: str
 
-# Token Model
 class Token(BaseModel):
     access_token: str
     token_type: str
 
-# Patient data model excluding sensitive data like password
 class Patient(BaseModel):
     name: str
     email: str
@@ -56,15 +53,14 @@ class Patient(BaseModel):
     age: int
     goals: str
 
-# Function to hash password
 def hash_password(password: str):
     return pwd_context.hash(password)
 
-# Function to verify password
+
 def verify_password(plain_password: str, hashed_password: str):
     return pwd_context.verify(plain_password, hashed_password)
 
-# Function to create JWT token
+
 def create_access_token(data: dict, expires_delta: Optional[datetime.timedelta] = None):
     to_encode = data.copy()
     if expires_delta:
@@ -115,7 +111,7 @@ async def register_patient(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error uploading image: {str(e)}")
 
-# Login route to get the JWT token
+# Login route to get the JWT tokenA
 @router.post("/login", response_model=Token)
 async def login_patient(patient_data: PatientLogin):
     # Verify if the patient exists and the password is correct

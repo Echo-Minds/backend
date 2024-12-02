@@ -1,6 +1,7 @@
 const Session = require('../Models/SessionModel');
 const Therapist = require('../Models/TherapistModel');
 const Patient = require('../Models/PatientModel');
+const Notification = require('../Models/NotificationModel')
 
 const scheduleSession = async (req, res) => {
   const { 
@@ -106,7 +107,14 @@ const scheduleSession = async (req, res) => {
         ],
       }
     );
-
+    const newNotify = await Notification.create({
+      type:"Session Scheduled",
+      message:`Your next session with ${therapist.name} is scheduled at ${startTime.substring(0,startTime.length-1).split('T')}`,
+      patientId:patientId,
+      therapistId:therapist._id,
+      timestamp: new Date(),
+      isRead: false
+    })
     return res.status(201).json({ message: 'Session successfully scheduled', session: newSession });
   } catch (err) {
     console.log(err);
