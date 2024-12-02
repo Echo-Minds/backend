@@ -34,7 +34,7 @@ const PatientSchema = new Schema({
             },
         },
     ],
-    goal: {
+    goals: {
         type: String,
         required: true,
     },

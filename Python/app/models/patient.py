@@ -22,7 +22,7 @@ class PatientRegistrationModel(BaseModel):
     phone: str = Field(..., regex=r'^\d{10}$')
     gender: str = Field(..., regex=r'^(Male|Female|Other)$')
     age: int = Field(..., gt=0, le=120)
-    goal: Optional[str] = Field(None, max_length=500)
+    goals: Optional[str] = Field(None, max_length=500)
     image: Optional[UploadFile] = None
 
     # Validators for full name and gender
@@ -68,7 +68,7 @@ async def register_patient(data: dict, file: Optional[UploadFile]):
             "phone": patient_data.phone,
             "gender": patient_data.gender,
             "age": patient_data.age,
-            "goal": patient_data.goal,
+            "goals": patient_data.goals,
             "password": hashed_password,
             "image_id": image_file_id,  # Image file ID stored in GridFS
         }
