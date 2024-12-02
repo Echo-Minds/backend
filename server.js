@@ -64,41 +64,6 @@ app.get('/api/notifications/:userType/:id', async (req, res) => {
   }
 });
 
-app.patch('/api/notifications/:notificationId', async (req, res) => {
-  const { notificationId } = req.params;
-  try {
-    const updatedNotification = await Notification.findByIdAndUpdate(
-      notificationId,
-      { isRead: true },
-      { new: true }
-    );
-    if (!updatedNotification) {
-      return res.status(404).json({ message: 'Notification not found' });
-    }
-    res.json(updatedNotification);
-  } catch (error) {
-    res.status(500).json({ message: 'Error updating notification', error });
-  }
-});
-
-app.post('/api/notifications', async (req, res) => {
-  const { type, message, patientId, therapistId, timestamp } = req.body;
-  try {
-    const newNotification = new Notification({
-      type,
-      message,
-      patientId,
-      therapistId,
-      timestamp,
-      isRead: false, 
-    });
-    await newNotification.save();
-    res.status(201).json({ message: 'Notification added successfully', notification: newNotification });
-  } catch (error) {
-    res.status(500).json({ message: 'Error adding notification', error });
-  }
-});
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
