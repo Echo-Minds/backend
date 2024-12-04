@@ -51,5 +51,5 @@ const SupervisorSchema = new Schema({
     ],
 });
 
-const Supervisor = mongoose.model('Supervisor', SupervisorSchema);
+const Supervisor = mongoose.model('supervisors', SupervisorSchema);
 module.exports = Supervisor;

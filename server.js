@@ -1,16 +1,27 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const sessionRoutes = require('./Routes/sessionRoutes');
 const Patient = require('./Models/PatientModel');
 const Therapist = require('./Models/TherapistModel');
 const Notification = require('./Models/NotificationModel');
+const therapistRoutes = require('./Routes/TherapistRoutes');
+
+const patientRoutes = require('./Routes/PatientRoutes');
+const supervisorRoutes = require('./Routes/SupervisorRoutes');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/sessions', sessionRoutes);
+
+app.use(bodyParser.json());
+app.use('/api/patients', patientRoutes);
+app.use('/api/therapists', therapistRoutes);
+app.use('/api/supervisors', supervisorRoutes);
 
 mongoose.connect(
   'mongodb+srv://bhuvaneshg:deepakbhuvi@cluster0.e2m47pj.mongodb.net/SIH',
