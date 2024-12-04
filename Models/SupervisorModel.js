@@ -21,17 +21,17 @@ const SupervisorSchema = new Schema({
     therapistIds: [
         {
             type: Types.ObjectId,
-            ref: 'Therapist', 
+            ref: 'therapists', 
         },
     ],
     reports: [
         {
-            therapistId: {
+            therapistId:{
                 type: Types.ObjectId,
-                ref: 'Therapist',
+                ref: 'therapists',
                 required: true,
             },
-            patientIds: {
+            patientId: {
                 type: Types.ObjectId, 
             },
             sessionCount: {
@@ -42,6 +42,9 @@ const SupervisorSchema = new Schema({
             },
             supervisorComments: {
                 type: String, 
+            },
+            combinedReport:{
+                type: String,
             },
             timestamp: {
                 type: Date,

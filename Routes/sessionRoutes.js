@@ -9,6 +9,8 @@ const getPatientList = require('../controllers/PatientList');
 const deleteSession = require('../controllers/DeleteSessions');
 const { formHandler } = require('../controllers/FormHandler');
 const { markRead } = require('../controllers/MarkRead');
+const { AssignedTherapist } = require('../Supervisor/AssignedTherapist');
+const { noOfPatients, noOfTherapist, totalSessions } = require('../Supervisor/HeroSection');
 
 const router = express.Router();
 
@@ -22,6 +24,10 @@ router.get('/patient/:patientId/availableSlots', getSlotsForPatient);
 router.get('/nextAppointment',nextAppointment);
 router.get('/assignedPatients',getAssignedPatients);
 router.get('/patientDetails', getPatientList);
+router.get('/assignedTherapist', AssignedTherapist);
+router.get('/noOfPatients',noOfPatients)
+router.get('/noOfTherapists',noOfTherapist)
+router.get('/totalSessions',totalSessions)
 
 
 module.exports = router;

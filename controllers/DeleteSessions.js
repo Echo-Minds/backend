@@ -1,29 +1,26 @@
 const Session = require('../Models/SessionModel');
 const Therapist = require('../Models/TherapistModel');
 const Notification = require('../Models/NotificationModel');
+const Patient = require('../Models/PatientModel'); 
+
 const deleteSession = async (req, res) => {
   const sessionId = req.query.sessionId;
 
   try {
-    // Find the session to retrieve session details
     const session = await Session.findById(sessionId);
 
     if (!session) {
       return res.status(404).send({ message: "Session not found" });
     }
 
-    // Extract details from the session
-    const { therapistId, startTime } = session;
+    const { patientId,therapistId, startTime } = session;
     const sessionDate = new Date(startTime).toISOString();
     console.log(sessionDate);
     const tempDate = new Date(startTime);
     const sessionDay = tempDate.toLocaleString('en-US', { weekday: 'long' ,timeZone:'UTC'});
-    const sessionParts = sessionDate.toString().split('T'); // Split into date and time parts
-    console.log(sessionParts[1]);
-    const sessionStartTime = sessionParts[1].substring(0, 5); // Take time part and format as "HH:mm"
-    console.log(sessionDay);
-    console.log(sessionStartTime);
-    // Delete the session
+    const sessionParts = sessionDate.toString().split('T');
+    const sessionStartTime = sessionParts[1].substring(0, 5); 
+
     const result = await Session.deleteOne({ _id: sessionId });
 
     if (result.deletedCount === 0) {
@@ -47,6 +44,17 @@ const deleteSession = async (req, res) => {
       }
       return timeSlot;
     });
+
+    const patient = await Patient.findById(patientId);
+    if (!patient) {
+      return res.status(404).send({ message: "Patient not found" });
+    }
+
+    patient.noOfSessions = Math.max(patient.noOfSessions - 1, 0); 
+    patient.sessionLogs = patient.sessionLogs.filter((log) => log.sessionId.equals(sessionId));
+
+    await patient.save();
+
     const deleteOne = await Notification.create({
       type:"Session Cancelled",
       message:`The session with ${therapist.name} was cancelled at ${new Date()}`,

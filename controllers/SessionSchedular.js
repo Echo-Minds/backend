@@ -1,7 +1,8 @@
 const Session = require('../Models/SessionModel');
 const Therapist = require('../Models/TherapistModel');
 const Patient = require('../Models/PatientModel');
-const Notification = require('../Models/NotificationModel')
+const Notification = require('../Models/NotificationModel');
+const { sendReportToSupervisor } = require('./ReportSumbission');
 
 const scheduleSession = async (req, res) => {
   const { 
@@ -107,6 +108,11 @@ const scheduleSession = async (req, res) => {
         ],
       }
     );
+    const delay = new Date(endTime).getTime() - Date.now() + 15 * 60 * 1000; 
+    console.log(delay);
+    setTimeout(() => {
+      sendReportToSupervisor(patientId);
+    }, delay);
     const newNotify = await Notification.create({
       type:"Session Scheduled",
       message:`Your next session with ${therapist.name} is scheduled at ${startTime.substring(0,startTime.length-1).split('T')}`,

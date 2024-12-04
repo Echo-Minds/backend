@@ -11,7 +11,7 @@ const nextAppointment = async (req, res) => {
         }
 
         const patient = await Patient.findById(patientId).exec();
-
+        
         if (!patient) {
             return res.status(404).json({ error: "Patient not found." });
         }

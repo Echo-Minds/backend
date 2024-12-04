@@ -108,10 +108,14 @@ async def register_patient(
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error uploading image: {str(e)}")
+    except e :
+        print (e)
 
 # Login route to get the JWT tokenA
 @router.post("/login", response_model=Token)
 async def login_patient(patient_data: PatientLogin):
+    print("hi")
+    print(patient_data.email+" "+patient_data.password)
     # Verify if the patient exists and the password is correct
     patient = db.patients.find_one({"email": patient_data.email})
     if not patient or not verify_password(patient_data.password, patient["password"]):
@@ -129,8 +133,7 @@ async def login_patient(patient_data: PatientLogin):
 @router.get("/patient/{patient_id}")
 async def get_patient_info(patient_id: str, token: str = Depends(oauth2_scheme)):
     try:
-        # Decode the token to verify the user
-        #payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         patient_email: str = payload.get("sub")
         if patient_email is None:
             raise HTTPException(status_code=401, detail="Invalid token")
