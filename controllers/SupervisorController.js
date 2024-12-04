@@ -6,9 +6,9 @@ const { hashPassword } = require('../utils/Password');
 
 // Register a new supervisor
 const registerSupervisor = async (req, res) => {
-  const { fullname, email, password, phone, specialization, image } = req.body;
-  // console.log(fullname, email, password, phone, specialization);
-  if (!fullname || !email || !password || !phone || !specialization) {
+  const { name, email, password, phone, specialization, image } = req.body;
+  // console.log(name, email, password, phone, specialization);
+  if (!name || !email || !password || !phone || !specialization) {
     return res.status(400).json({ message: 'All fields are required.' });
   }
 
@@ -21,7 +21,7 @@ const registerSupervisor = async (req, res) => {
     const hashedPassword = await hashPassword(password);
 
     const newSupervisor = new Supervisor({
-      fullname,
+      name,
       email,
       password: hashedPassword,
       phone,

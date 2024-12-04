@@ -19,9 +19,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/sessions', sessionRoutes);
 
 app.use(bodyParser.json());
-app.use('/api/patients', patientRoutes);
-app.use('/api/therapists', therapistRoutes);
-app.use('/api/supervisors', supervisorRoutes);
+app.use('/api/patient', patientRoutes);
+app.use('/api/therapist', therapistRoutes);
+app.use('/api/supervisor', supervisorRoutes);
 
 mongoose.connect(
   'mongodb+srv://bhuvaneshg:deepakbhuvi@cluster0.e2m47pj.mongodb.net/SIH',

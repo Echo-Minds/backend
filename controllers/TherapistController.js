@@ -7,7 +7,7 @@ const { createAccessToken } = require('../utils/auth'); // For JWT token generat
 // Register a therapist
 exports.registerTherapist = async (req, res) => {
   try {
-    const { fullname, email, password, phone, course, department, image } = req.body;
+    const { name, email, password, phone, course, department, image } = req.body;
 
     // Check if therapist with the same email already exists
     const existingTherapist = await Therapist.findOne({ email });
@@ -20,7 +20,7 @@ exports.registerTherapist = async (req, res) => {
 
     // Create a new therapist record
     const newTherapist = new Therapist({
-      fullname,
+      name,
       email,
       password: hashedPassword,
       phone,
