@@ -64,7 +64,8 @@ const loginSupervisor = async (req, res) => {
 
     res.status(200).json({
       message: 'Login successful.',
-      token,
+      token:token,
+			id: supervisor._id,
     });
   } catch (error) {
     console.log(error);
