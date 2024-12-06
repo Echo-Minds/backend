@@ -44,6 +44,8 @@ const SessionSchema = new Schema({
         loudVoice: { type: Number, min: 1, max: 5 },
         softVoice: { type: Number, min: 1, max: 5 },
         pitchLoudnessComment: { type: String },
+
+        reviewToPatient:{type: String},
     }],
     nextStartTime:{
         type: Date,

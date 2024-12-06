@@ -21,6 +21,7 @@ const formHandler = async (req, res) => {
             loudVoice,
             softVoice,
             pitchLoudnessComment,
+            reviewToPatient
         } = req.body;
 
         const reqSession = await session.findById(sessionId).exec();
@@ -52,6 +53,7 @@ const formHandler = async (req, res) => {
             loudVoice,
             softVoice,
             pitchLoudnessComment,
+            reviewToPatient
         };
 
         reqSession.notes.push(newNote);
