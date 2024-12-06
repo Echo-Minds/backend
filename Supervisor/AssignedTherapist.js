@@ -9,7 +9,6 @@ const AssignedTherapist = async (req, res) => {
         }
 
         const supervisor = await Supervisor.findById(supervisorId).populate('therapistIds').exec();
-        console.log("HI");
         if (!supervisor) {
             return res.status(404).send("Supervisor not found in the database");
         }

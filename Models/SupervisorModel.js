@@ -17,7 +17,9 @@ const SupervisorSchema = new Schema({
     },name:{
         type: String,
         required: true
-    },
+    },phone: { type: String, required: true },
+    specialization: { type: String, required: true },
+    image: { type: String }, 
     therapistIds: [
         {
             type: Types.ObjectId,

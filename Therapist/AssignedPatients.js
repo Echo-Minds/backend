@@ -30,7 +30,43 @@ const assignedPatients = async (req, res) => {
     res.status(500).send(error.message || "An error occurred");
   }
 };
+const getTherapistById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const therapist = await Therapist.findById(id);
+    if (!therapist) {
+      return res.status(404).json({ message: "Therapist not found" });
+    }
+
+    res.status(200).json({ therapist });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching therapist", error });
+  }
+};
+const updateTherapistById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedData = req.body;
+    console.log("ID",id);
+    console.log("hi",updatedData);
+    const therapist = await Therapist.findByIdAndUpdate(id, updatedData, {
+      new: true,
+    });
+    console.log(therapist);
+    if (!therapist) {
+      return res.status(404).json({ message: "Therapist not found" });
+    }
+
+    res.status(200).json({ message: "Therapist updated successfully", therapist });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating therapist", error });
+  }
+};
+
 
 module.exports = {
   assignedPatients,
+  getTherapistById,
+  updateTherapistById
 };

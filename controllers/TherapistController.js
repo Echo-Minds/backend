@@ -4,22 +4,26 @@ const Therapist = require("../Models/Therapist_Model"); // Import the Therapist 
 const { hashPassword, verifyPassword } = require("../utils/Password"); // For password operations
 const { createAccessToken } = require("../utils/auth"); // For JWT token generation
 
-// Register a therapist
 exports.registerTherapist = async (req, res) => {
   try {
     const { name, email, password, phone, course, department, image } =
       req.body;
 
-    // Check if therapist with the same email already exists
     const existingTherapist = await Therapist.findOne({ email });
     if (existingTherapist) {
       return res.status(400).json({ message: "Email is already registered" });
     }
 
-    // Hash the password
     const hashedPassword = await hashPassword(password);
-
-    // Create a new therapist record
+    const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+    const defaultAvailableTimes = days.map((day) => ({
+      day,
+      slots: Array.from({ length: 8 }, (_, i) => ({
+        startTime: `${8 + i}:00`,
+        endTime: `${9 + i}:00`,
+        isAvailable: true,
+      })),
+    }));
     const newTherapist = new Therapist({
       name,
       email,
@@ -28,6 +32,7 @@ exports.registerTherapist = async (req, res) => {
       course,
       department,
       image,
+      availableTimes: defaultAvailableTimes
     });
 
     await newTherapist.save();
@@ -40,24 +45,20 @@ exports.registerTherapist = async (req, res) => {
   }
 };
 
-// Login a therapist
 exports.loginTherapist = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check if the therapist exists
     const therapist = await Therapist.findOne({ email });
     if (!therapist) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    // Verify the password
     const isPasswordValid = await verifyPassword(password, therapist.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    // Generate an access token
     const token = createAccessToken({
       id: therapist._id,
       email: therapist.email,

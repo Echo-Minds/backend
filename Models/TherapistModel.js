@@ -10,7 +10,19 @@ const TherapistSchema = new Schema({
         ref: 'Supervisor',
         default: [] 
       }
-      ,
+      ,phone: {
+        type: String,
+        required: true,
+        match: /^\d{10}$/,
+      },
+      course: {
+        type: String,
+        required: true,
+      },
+      department: {
+        type: String,
+        required: true,
+      },
     assignedPatients: [{ type: Types.ObjectId, ref: 'Patient' }],
     availableTimes: [
         {
