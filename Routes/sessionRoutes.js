@@ -19,14 +19,20 @@ const { assignedPatients, getTherapistById, updateTherapistById } = require("../
 const { assignTask } = require("../Therapist/AssignTask");
 const { getExercises } = require("../Patient/getExercise");
 const { getSupervisorNames } = require("../Therapist/SupervisorList");
+const { getReviews } = require("../Patient/Review");
+const { assingmentOfSupervisor, getTherapistsRequests, acceptRequest, rejectRequest } = require("../Supervisor/AssignmentRequest");
 
 const router = express.Router();
 
+router.get('/therapistsRequests', getTherapistsRequests);
+router.put('/assignmentRequest/accept', acceptRequest);
+router.put('/assignmentRequest/reject', rejectRequest);
 router.post("/schedule", scheduleSession);
 router.post("/assign", assignPatientToTherapist);
 router.post("/reassign", handleSessionRating);
 router.post("/formupdate", formHandler);
 router.post("/markunread", markRead);
+router.post("/assignmentRequest",assingmentOfSupervisor)
 router.delete("/delete", deleteSession);
 router.get("/getExercise/:patientId", getExercises);
 router.put("/therapist/:id",updateTherapistById);
@@ -42,5 +48,6 @@ router.get("/totalSessions", totalSessions);
 router.get("/therapist/:id", getTherapistById);
 router.get("/patientName", assignedPatients);
 router.post("/assignTask", assignTask);
+router.get('/review/:id',getReviews);
 
 module.exports = router;

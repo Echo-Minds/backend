@@ -39,7 +39,7 @@ exports.registerTherapist = async (req, res) => {
 
     res
       .status(201)
-      .json({ message: "Registration successful", therapist: newTherapist });
+      .json({ message: "Registration successful", therapistId: newTherapist._id });
   } catch (error) {
     res.status(500).json({ message: "Error registering therapist", error });
   }
