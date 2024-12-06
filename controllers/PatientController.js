@@ -5,6 +5,11 @@ const { createAccessToken } = require('../utils/auth');
 // Register a new patient
 exports.registerPatient = async (req, res) => {
   const { name, email, phone, age, gender, goals, password } = req.body;
+ 
+	const existingPatient = await Patient.findOne({ email });
+    if (existingPatient) {
+      return res.status(400).json({ message: "Email is already registered" });
+    }
 
   try {
     const hashedPassword = await hashPassword(password);

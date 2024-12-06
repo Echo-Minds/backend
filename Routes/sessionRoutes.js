@@ -17,7 +17,7 @@ const {
 } = require("../Supervisor/HeroSection");
 const { assignedPatients, getTherapistById, updateTherapistById } = require("../Therapist/AssignedPatients");
 const { assignTask } = require("../Therapist/AssignTask");
-const { getExercises } = require("../Patient/getExercise");
+const { getExercises , updatePatientById,getPatientById } = require("../Patient/getExercise");
 const { getSupervisorNames } = require("../Therapist/SupervisorList");
 
 const router = express.Router();
@@ -29,6 +29,7 @@ router.post("/formupdate", formHandler);
 router.post("/markunread", markRead);
 router.delete("/delete", deleteSession);
 router.get("/getExercise/:patientId", getExercises);
+router.put("/patientProfile/:id", updatePatientById);
 router.put("/therapist/:id",updateTherapistById);
 router.get("/patient/:patientId/availableSlots", getSlotsForPatient);
 router.get("/nextAppointment", nextAppointment);
@@ -40,6 +41,7 @@ router.get("/noOfPatients", noOfPatients);
 router.get("/noOfTherapists", noOfTherapist);
 router.get("/totalSessions", totalSessions);
 router.get("/therapist/:id", getTherapistById);
+router.get("/patientProfile/:id", getPatientById);
 router.get("/patientName", assignedPatients);
 router.post("/assignTask", assignTask);
 
