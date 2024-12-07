@@ -2,11 +2,6 @@ const mongoose = require('mongoose');
 const { Schema, Types } = mongoose;
 
 const SupervisorSchema = new Schema({
-    supervisorId: {
-        type: Types.ObjectId,
-        default: () => new Types.ObjectId(),
-        unique: true,
-    },
     email: {
         type: String,
         required: true,
@@ -14,12 +9,22 @@ const SupervisorSchema = new Schema({
     password: {
         type: String,
         required: true,
-    },name:{
+    },
+    name: {
         type: String,
         required: true
-    },phone: { type: String, required: true },
-    specialization: { type: String, required: true },
-    image: { type: String }, 
+    },
+    phone: { 
+        type: String, 
+        required: true 
+    },
+    specialization: { 
+        type: String, 
+        required: true 
+    },
+    image: { 
+        type: String 
+    }, 
     therapistIds: [
         {
             type: Types.ObjectId,
@@ -28,7 +33,7 @@ const SupervisorSchema = new Schema({
     ],
     reports: [
         {
-            therapistId:{
+            therapistId: {
                 type: Types.ObjectId,
                 ref: 'therapists',
                 required: true,
@@ -45,7 +50,7 @@ const SupervisorSchema = new Schema({
             supervisorComments: {
                 type: String, 
             },
-            combinedReport:{
+            combinedReport: {
                 type: String,
             },
             timestamp: {
@@ -54,7 +59,20 @@ const SupervisorSchema = new Schema({
             },
         },
     ],
+    monthlyPatientCounts: [
+        {
+            month: { 
+                type: String, 
+                required: true 
+            },
+            patientCount: { 
+                type: Number, 
+                required: true 
+            }
+        }
+    ]
 });
+
 
 const Supervisor = mongoose.model('supervisors', SupervisorSchema);
 module.exports = Supervisor;

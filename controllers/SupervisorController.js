@@ -83,8 +83,71 @@ const getAllSupervisors = async (req, res) => {
   }
 };
 
+const getMonthlyPatientCounts = async (req, res) => {
+  try {
+    const now = new Date();
+    const currentMonth = now.getMonth();  // Get current month (0-based index)
+
+    // Month name mapping for matching against the 'month' field in the database
+    const monthNameMap = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+
+    // Aggregation pipeline to calculate patient counts for every month
+    const pipeline = [
+      {
+        $match: {
+          'monthlyPatientCounts': { $exists: true, $ne: [] }  // Ensure monthlyPatientCounts field exists
+        }
+      },
+      {
+        $unwind: '$monthlyPatientCounts'  // Unwind the array to access each month's data
+      },
+      {
+        $project: {
+          month: '$monthlyPatientCounts.month',
+          patientCount: '$monthlyPatientCounts.patientCount'
+        }
+      },
+      {
+        $group: {
+          _id: '$month',  // Group by the month field
+          totalPatients: { $sum: '$patientCount' }  // Sum the patientCount for each month
+        }
+      },
+      {
+        $sort: { '_id': 1 }  // Sort by month alphabetically
+      }
+    ];
+    
+
+    // Execute the aggregation pipeline
+    const results = await Supervisor.aggregate(pipeline);
+
+    // Log the results before sending them
+    console.log("Aggregation results:", results);
+
+    // Format the results to match the required output (showing all months even if there are no patients)
+    const chartData = monthNameMap.map(monthName => {
+      const result = results.find(res => res._id === monthName);
+      const totalPatients = result ? result.totalPatients : 0;
+      return { month: monthName, patients: totalPatients };
+    });
+
+    res.json(chartData);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching supervisor data." });
+  }
+};
+
+
+
 module.exports = {
   registerSupervisor,
   loginSupervisor,
   getAllSupervisors,
+  getMonthlyPatientCounts
 };
