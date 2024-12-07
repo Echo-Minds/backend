@@ -67,7 +67,7 @@ app.get('/getName', async (req, res) => {
 app.get('/api/notifications/:userType/:id', async (req, res) => {
   const { userType, id } = req.params;
   try {
-    const query = userType === 'patient' ? { patientId: id } : { therapistId: id };
+    const query = userType === 'patient' ? { patientId: id } :(userType==='therapist'? { therapistId: id }:{supervisorId:id});
     const notifications = await Notification.find(query).sort({ timestamp: -1 }).exec();
     res.json(notifications);
   } catch (error) {

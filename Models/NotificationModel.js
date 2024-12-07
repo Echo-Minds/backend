@@ -12,8 +12,8 @@ const notificationSchema = new mongoose.Schema({
   patientId: {
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Patient', 
-    required: true,  
   },
+  supervisorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Supervisor',  },
   therapistId: {
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Therapist', 

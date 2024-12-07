@@ -17,8 +17,6 @@ const {
 } = require("../Supervisor/HeroSection");
 const { assignedPatients, getTherapistById, updateTherapistById } = require("../Therapist/AssignedPatients");
 const { assignTask } = require("../Therapist/AssignTask");
-const { getExercises } = require("../Patient/getExercise");
-const { getSupervisorNames } = require("../Therapist/SupervisorList");
 const { getReviews } = require("../Patient/Review");
 const { assingmentOfSupervisor, getTherapistsRequests, acceptRequest, rejectRequest } = require("../Supervisor/AssignmentRequest");
 const { getExercises , updatePatientById,getPatientById } = require("../Patient/getExercise");

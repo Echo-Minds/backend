@@ -26,6 +26,15 @@ const assignPatientToTherapist = async (req, res) => {
     }
 
     let therapistWithLeastPatients = therapists.reduce((prev, curr) => {
+      const prevSupervisorCount = prev.supervisorIds.length;
+      const currSupervisorCount = curr.supervisorIds.length;
+      if (currSupervisorCount < 1) {
+        return prev; 
+      }
+    
+      if (prevSupervisorCount < 1) {
+        return curr;
+      }
       return prev.assignedPatients.length < curr.assignedPatients.length ? prev : curr;
     });
 

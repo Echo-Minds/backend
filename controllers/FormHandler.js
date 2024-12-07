@@ -1,6 +1,7 @@
 const session = require("../Models/SessionModel");
 
 const formHandler = async (req, res) => {
+    console.log("HI");
     try {
         const {
             sessionId,
@@ -23,7 +24,7 @@ const formHandler = async (req, res) => {
             pitchLoudnessComment,
             reviewToPatient
         } = req.body;
-
+        console.log(sessionId);
         const reqSession = await session.findById(sessionId).exec();
 
         if (!reqSession) {
@@ -55,7 +56,7 @@ const formHandler = async (req, res) => {
             pitchLoudnessComment,
             reviewToPatient
         };
-
+        console.log(newNote);
         reqSession.notes.push(newNote);
         await reqSession.save();
 
