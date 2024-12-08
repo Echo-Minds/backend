@@ -2,15 +2,15 @@ const Notification = require("../Models/NotificationModel");
 
 const markRead = async (req, res) => {
   try {
-    const { patientId, therapistId } = req.body;
+    const { patientId, therapistId, supervisorId } = req.body;
 
-    if (!patientId && !therapistId) {
+    if (!patientId && !therapistId && !supervisorId) {
       return res
         .status(400)
         .send("Either Patient ID or Therapist ID is required.");
     }
 
-    const query = patientId ? { patientId } : { therapistId };
+    const query = patientId ? { patientId } : ( therapistId ? {therapistId}:{supervisorId});
 
     const toMake = await Notification.find(query);
     if (toMake.length === 0) {

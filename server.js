@@ -66,12 +66,98 @@ app.get('/getName', async (req, res) => {
 
 app.get('/api/notifications/:userType/:id', async (req, res) => {
   const { userType, id } = req.params;
+
   try {
-    const query = userType === 'patient' ? { patientId: id } :(userType==='therapist'? { therapistId: id }:{supervisorId:id});
+    // Query based on user type
+    const query =
+      userType === 'patient'
+        ? { patientId: id }
+        : userType === 'therapist'
+        ? { therapistId: id }
+        : { supervisorId: id };
+
     const notifications = await Notification.find(query).sort({ timestamp: -1 }).exec();
-    res.json(notifications);
+
+    // Transform notifications to user-centric messages
+    const userCentricNotifications = notifications.map((notif) => {
+      const sessionDate = notif.message.match(/\d{4}-\d{2}-\d{2}/)?.[0];
+      const sessionTime = notif.message.match(/\d{2}:\d{2}:\d{2}/)?.[0];
+      const sessionWith = notif.message.split("with")[1]?.split("scheduled")[0]?.trim();
+      const supervisorName = notif.message.split("Supervisor")[1]?.split("has")[0]?.trim();
+
+      if (notif.type === "Session Scheduled") {
+        if (userType === 'patient') {
+          return {
+            ...notif.toObject(),
+            message: notif.message, // No changes for patients
+          };
+        } else if (userType === 'therapist') {
+          return {
+            ...notif.toObject(),
+            message: `Dear Therapist, you have a session with Patient ${sessionWith} scheduled on ${sessionDate} at ${sessionTime}.`,
+          };
+        } else if (userType === 'supervisor') {
+          return {
+            ...notif.toObject(),
+            message: `Supervisor, Therapist ${sessionWith} has a session with Patient ID ${notif.patientId} scheduled on ${sessionDate} at ${sessionTime}.`,
+          };
+        }
+      }
+
+      if (notif.type === "Session Cancelled") {
+        if (userType === 'patient') {
+          return {
+            ...notif.toObject(),
+            message: notif.message, // No changes for patients
+          };
+        } else if (userType === 'therapist') {
+          return {
+            ...notif.toObject(),
+            message: `Dear Therapist, the session with Patient ${sessionWith} scheduled on ${sessionDate} at ${sessionTime} has been cancelled.`,
+          };
+        } else if (userType === 'supervisor') {
+          return {
+            ...notif.toObject(),
+            message: `Supervisor, the session between Therapist ${sessionWith} and Patient ID ${notif.patientId} scheduled on ${sessionDate} at ${sessionTime} has been cancelled.`,
+          };
+        }
+      }
+
+      if (notif.type === "rejected") {
+        if (userType === 'therapist') {
+          return {
+            ...notif.toObject(),
+            message: notif.message, // No changes for therapists
+          };
+        } else if (userType === 'supervisor') {
+          return {
+            ...notif.toObject(),
+            message: `Supervisor, the request from Therapist ${id} has been rejected.`,
+          };
+        }
+      }
+
+      if (notif.type === "accepted") {
+        if (userType === 'therapist') {
+          return {
+            ...notif.toObject(),
+            message: notif.message, // No changes for therapists
+          };
+        } else if (userType === 'supervisor') {
+          return {
+            ...notif.toObject(),
+            message: `Supervisor, the request from Therapist ${id} has been accepted.`,
+          };
+        }
+      }
+
+      return notif; // Default case for unhandled notification types
+    });
+
+    res.json(userCentricNotifications);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching notifications', error });
+    console.error('Error fetching notifications:', error);
+    res.status(500).json({ error: 'An error occurred while fetching notifications.' });
   }
 });
 

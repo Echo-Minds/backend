@@ -97,7 +97,7 @@ const acceptRequest = async (req, res) => {
     }
 
     const notification = new Notification({
-      type: "assignment",
+      type: "accepted",
       message: `Your request to the Supervisor ${supervisor.name} has been accepted.`,
       therapistId,
       supervisorId,
@@ -134,7 +134,7 @@ const rejectRequest = async (req, res) => {
       return res.status(404).json({ message: "Request not found." });
     }
     const notification = new Notification({
-      type: "assignment",
+      type: "rejected",
       message: `Your request to the Supervisor ${supervisor.name} has been rejected.`,
       therapistId,
       supervisorId,
