@@ -30,20 +30,34 @@ const assignedPatients = async (req, res) => {
     res.status(500).send(error.message || "An error occurred");
   }
 };
+
 const getTherapistById = async (req, res) => {
   try {
     const { id } = req.params;
 
+    // Find the therapist by ID
     const therapist = await Therapist.findById(id);
     if (!therapist) {
       return res.status(404).json({ message: "Therapist not found" });
     }
 
-    res.status(200).json({ therapist });
+    // Fetch patient details using their ObjectIds
+    const patients = await Patient.find({
+      _id: { $in: therapist.assignedPatients },
+    });
+
+    // Respond with the therapist details and the patients array
+    res.status(200).json({
+      therapist: {
+        ...therapist.toObject(),
+        patients,
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: "Error fetching therapist", error });
   }
 };
+
 const updateTherapistById = async (req, res) => {
   try {
     const { id } = req.params;
