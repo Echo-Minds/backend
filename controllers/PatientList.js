@@ -21,7 +21,14 @@ const getPatientList = async (req, res) => {
 
     const patientData = await Promise.all(
       sessions.map(async (session) => {
-        const patient = await Patient.findById(session.patientId).exec();
+        const patient = await 
+        
+        
+        
+        
+        
+        
+        Patient.findById(session.patientId).exec();
         return {
           name: patient.name,
           age: patient.age,

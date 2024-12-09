@@ -42,7 +42,7 @@ router.get("/patient/:patientId/availableSlots", getSlotsForPatient);
 router.get("/nextAppointment", nextAppointment);
 router.get("/assignedPatients", getAssignedPatients);
 router.get("/patientDetails", getPatientList);
-router.get("/assignedTherapist", AssignedTherapist);
+router.post("/assignedTherapist", AssignedTherapist);
 router.get("/supervisorDetails", getSupervisorNames)
 router.get("/noOfPatients", noOfPatients);
 router.get("/noOfTherapists", noOfTherapist);
