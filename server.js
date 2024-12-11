@@ -24,7 +24,7 @@ app.use('/api/therapist', therapistRoutes);
 app.use('/api/supervisor', supervisorRoutes);
 
 mongoose.connect(
-  'mongodb+srv://bhuvaneshg:deepakbhuvi@cluster0.e2m47pj.mongodb.net/SIH',
+  'mongodb+srv://bhuvaneshg:deepakbhuvi@cluster0.e2m47pj.mongodb.net/SIH2',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -158,6 +158,32 @@ app.get('/api/notifications/:userType/:id', async (req, res) => {
   } catch (error) {
     console.error('Error fetching notifications:', error);
     res.status(500).json({ error: 'An error occurred while fetching notifications.' });
+  }
+});
+
+app.get('/file/:id', async (req, res) => {
+  const fileId = req.params.id;
+
+  try {
+      const objectId = new mongodb.ObjectId(fileId);
+
+      // Create a readable stream
+      const downloadStream = bucket.openDownloadStream(objectId);
+
+      // Set the response headers for PDF
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', 'inline');
+
+      // Pipe the stream to the response
+      downloadStream.pipe(res);
+
+      downloadStream.on('error', (err) => {
+          console.error('Stream error:', err);
+          res.status(404).json({ error: 'File not found.' });
+      });
+  } catch (err) {
+      console.error('Error retrieving file:', err);
+      res.status(400).json({ error: 'Invalid file ID or internal error.' });
   }
 });
 
